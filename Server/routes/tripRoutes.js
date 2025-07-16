@@ -1,0 +1,40 @@
+const express = require("express");
+const {
+  createTrip,
+  getAllTrips,
+  getSingleTrip,
+  updateTrip,
+  deleteTrip,
+  addDestination,
+  updateDestination,
+  deleteDestination,
+  likeTrip,
+  unlikeTrip,
+  addComment,
+  deleteComment,
+} = require("../controllers/tripController");
+const { protect } = require("../middleware/authMiddleware");
+
+const router = express.Router();
+
+// Trip CRUD
+router.post("/", protect, createTrip);
+router.get("/", getAllTrips);
+router.get("/:tripId", getSingleTrip);
+router.put("/:tripId", protect, updateTrip);
+router.delete("/:tripId", protect, deleteTrip);
+
+// Destinations
+router.post("/:tripId/destinations", protect, addDestination);
+router.put("/:tripId/destinations/:destinationId", protect, updateDestination);
+router.delete("/:tripId/destinations/:destinationId", protect, deleteDestination);
+
+// Likes
+router.post("/:tripId/like", protect, likeTrip);
+router.post("/:tripId/unlike", protect, unlikeTrip);
+
+// Comments
+router.post("/:tripId/comments", protect, addComment);
+router.delete("/:tripId/comments/:commentId", protect, deleteComment);
+
+module.exports = router;
