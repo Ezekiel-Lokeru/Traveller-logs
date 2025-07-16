@@ -8,3 +8,5 @@ yarn-error.log*
 # Runtime data 
 *.pid
 *.seed
+# Ignore dotenv
+.env
