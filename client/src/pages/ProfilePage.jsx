@@ -69,6 +69,29 @@ const ProfilePage = () => {
     }
   };
 
+  const handleAvatarUpload = async (e) => {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const res = await api.post("/upload/avatar", formData, {
+         headers: {
+         "Content-Type": "multipart/form-data",
+         Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+    // Update context with new avatar
+     setUser({ ...user, avatar: res.data.avatar });
+     alert("Avatar updated!");
+     } catch (error) {
+       console.error("Avatar upload error:", error);
+       alert("Failed to upload avatar");
+     }
+   };
+
+
   return (
     <div className="p-8 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">My Profile</h1>
@@ -76,6 +99,21 @@ const ProfilePage = () => {
         <p>Loading...</p>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+
+          <label className="block mb-2">Profile Photo</label>
+          {user?.avatar && (
+          <img
+           src={user.avatar}
+          alt="Avatar"
+          className="w-24 h-24 rounded-full mb-2 object-cover"
+          />
+          )}
+           <input
+           type="file"
+           accept="image/*"
+           onChange={handleAvatarUpload}
+           className="border p-2 rounded"
+           />
           <input
             type="text"
             name="username"
