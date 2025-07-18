@@ -17,6 +17,23 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      minlength: 6,
+    },
+    confirmPassword: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
+    // Additional fields for user profile
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
     },
     bio: {
       type: String,

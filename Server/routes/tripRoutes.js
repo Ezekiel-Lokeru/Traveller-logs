@@ -2,8 +2,9 @@ const express = require("express");
 const {
   createTrip,
   getAllTrips,
-  getSingleTrip,
+  getUserTrips,
   updateTrip,
+  getSingleTrip,
   deleteTrip,
   addDestination,
   updateDestination,
@@ -19,7 +20,8 @@ const router = express.Router();
 
 // Trip CRUD
 router.post("/", protect, createTrip);
-router.get("/", getAllTrips);
+router.get("/public", getAllTrips);
+router.get("/:my-trips", protect, getUserTrips);
 router.get("/:tripId", getSingleTrip);
 router.put("/:tripId", protect, updateTrip);
 router.delete("/:tripId", protect, deleteTrip);

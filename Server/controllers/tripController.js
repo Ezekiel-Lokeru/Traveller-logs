@@ -33,6 +33,16 @@ const getAllTrips = async (req, res) => {
   }
 };
 
+const getUserTrips = async (req, res) => {
+  try {
+    const trips = await Trip.find({ userId: req.user._id }).populate("userId", "username profilePicture");
+    res.status(200).json(trips);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
 const getSingleTrip = async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId).populate("userId", "username profilePicture");
@@ -241,6 +251,7 @@ const deleteComment = async (req, res) => {
 module.exports = {
   createTrip,
   getAllTrips,
+  getUserTrips,
   getSingleTrip,
   updateTrip,
   deleteTrip,

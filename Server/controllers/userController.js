@@ -6,7 +6,7 @@ const generateToken = require("../utils/generateToken");
 // @route   POST /api/users/register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, firstName, lastName, email, password } = req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -19,12 +19,16 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
+    firstName, 
+    lastName
   });
 
   if (user) {
     res.status(201).json({
       _id: user._id,
       username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       token: generateToken(user._id),
     });
