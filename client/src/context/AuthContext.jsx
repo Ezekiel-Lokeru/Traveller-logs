@@ -1,28 +1,56 @@
-import { createContext, useState, useEffect } from "react";
+// context/AuthContext.jsx
+import { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import api from "../api/api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    // Load from localStorage if exists
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+  const [user, setUser] = useState(null);
+
+  // Load user from cookie on initial load
+  useEffect(() => {
+    const storedUser = Cookies.get("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  // Login method
+  const login = (data) => {
+    const { user: userData, token } = data;
+    setUser(userData);
+    Cookies.set("token", token); // for auth headers
+    Cookies.set("user", JSON.stringify(userData));
+  };
+
+  // Logout method
+  const logout = () => {
+    setUser(null);
+    Cookies.remove("token");
+    Cookies.remove("user");
+  };
+
+  // Register method
+  const register = async (formData) => {
+  const res = await api.post("/auth/register", formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
-  // Save user to localStorage whenever it changes
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
+  localStorage.setItem("token", res.data.token);
+  setUser(res.data.user);
+  return { success: true, user: res.data.user }; 
+};
+
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user,setUser, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthContext;
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAuth = () => useContext(AuthContext);
