@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api/api";
-import AuthContext from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const ProfilePage = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser } = useAuth();
   const { userId } = useParams();
 
   const [formData, setFormData] = useState({
