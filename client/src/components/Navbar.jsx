@@ -1,37 +1,35 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
-function Navbar() {
-  const { user, setUser } = useContext(AuthContext);
+const Navbar = () => {
+  const { user } = useAuth();
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  };
+  if (user === undefined) return null;
+  
 
   return (
-    <nav className="bg-gray-800 text-white p-4 flex justify-between">
-      <div className="font-bold">Traveller Logs</div>
-      <div className="flex gap-4">
-        <Link to="/">Home</Link>
+    <nav className="bg-white shadow p-4 flex justify-between items-center">
+      <Link to="/" className="font-bold text-3xl text-blue-600">
+        TravellerLogs
+      </Link>
+      <div className="space-x-4">
         {user ? (
           <>
-            <Link to={user?._id ? `/profile/${user._id}` : "#"}>Profile</Link>
-            <button onClick={handleLogout} className="hover:underline">
-              Logout
-            </button>
+            <Link to="/trips" className="text-xl font-bold hover:text-blue-600">Trips</Link>
+            <Link to="/create-trip" className="text-xl font-bold hover:text-blue-600">New Trip</Link>
+            <Link to="/profile" className="text-xl font-bold hover:text-blue-600">Profile</Link>
+            <Link to="/logout" className="text-xl font-bold hover:text-blue-600">Logout</Link>
+
           </>
         ) : (
           <>
-            <Link to="/register">Register</Link>
-            <Link to="/login">Login</Link>
+            <Link to="/register" className="text-xl font-bold hover:text-blue-600">Register</Link>
+            <Link to="/login" className="text-xl font-bold hover:text-blue-600">Login</Link>
           </>
         )}
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;
