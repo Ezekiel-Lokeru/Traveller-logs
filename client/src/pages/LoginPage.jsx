@@ -11,7 +11,7 @@ function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const { setUser } = useAuth();
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setError] = useState({ email: "", password: "", form: "" });
 
@@ -25,15 +25,18 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const res = await api.post("/auth/login", formData);
       setUser(res.data);
       Cookies.set("token", res.data.token);
-      navigate("/profile/" + res.data.user._id);
+      navigate("/dashboard/");
     } catch (error) {
       console.error("Login error:", error);
       setError(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,7 +59,7 @@ function LoginPage() {
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="w-full block text-sm font-medium text-gray-700 mb-2">
                 Email address
               </label>
               <div className="relative">
@@ -68,7 +71,7 @@ function LoginPage() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  className="input pl-10"
+                  className="input pl-10 w-full"
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
@@ -119,7 +122,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-primary w-full flex items-center justify-center h-12 text-base"
+                className="btn-primary w-full flex items-center justify-center h-12 text-base font-medium bg-blue-600"
               >
                 {loading ? <LoadingSpinner size="small" /> : 'Sign in'}
               </button>

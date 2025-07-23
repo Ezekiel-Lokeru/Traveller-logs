@@ -15,8 +15,8 @@ const Navbar = () => {
       <div className="space-x-4">
         {user ? (
           <>
+            <Link to="/dashboard/" className="text-xl font-bold hover:text-blue-600">Dashboard</Link>
             <Link to="/trips" className="text-xl font-bold hover:text-blue-600">Trips</Link>
-            <Link to="/create-trip" className="text-xl font-bold hover:text-blue-600">New Trip</Link>
             <Link to="/profile" className="text-xl font-bold hover:text-blue-600">Profile</Link>
             <Link to="/logout" className="text-xl font-bold hover:text-blue-600">Logout</Link>
 

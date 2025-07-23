@@ -1,32 +1,77 @@
 const Trip = require("../models/Trip");
 const User = require("../models/User");
 
+
+const getDashboardStats = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const totalTrips = await Trip.countDocuments({ user: userId });
+    const upcomingTrips = await Trip.countDocuments({
+      user: userId,
+      date: { $gte: new Date() }
+    });
+
+    res.json({ totalTrips, upcomingTrips });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+const getUserStats = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const trips = await Trip.find({ userId });
+
+    const totalTrips = trips.length;
+    const uniqueCountries = new Set(trips.map((trip) => trip.country)).size;
+
+    res.json({ trips: totalTrips, countries: uniqueCountries });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch stats", error: error.message });
+  }
+};
+
 const createTrip = async (req, res) => {
   try {
-    const { title, description, startDate, endDate, isPublic } = req.body;
-
-    const newTrip = new Trip({
-      userId: req.user.id,
+    const {
       title,
       description,
+      country,
+      destination,
+      startDate,
+      endDate,
+      isPublic
+    } = req.body;
+
+    const newTrip = new Trip({
+      user: req.user._id, 
+      title,
+      description,
+      country,
+      destination,
       startDate,
       endDate,
       isPublic,
+      images: [], // Set this to [] or handle uploaded files via multer
       destinations: [],
       likes: [],
       comments: [],
     });
 
     await newTrip.save();
+
     res.status(201).json({ message: "Trip created successfully", trip: newTrip });
   } catch (error) {
+    console.error("Create Trip Error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
+
 const getAllTrips = async (req, res) => {
   try {
-    const trips = await Trip.find({ isPublic: true }).populate("userId", "username profilePicture");
+    const trips = await Trip.find({ isPublic: true }).populate("userId", "username");
     res.status(200).json(trips);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -35,17 +80,17 @@ const getAllTrips = async (req, res) => {
 
 const getUserTrips = async (req, res) => {
   try {
-    const trips = await Trip.find({ userId: req.user._id }).populate("userId", "username profilePicture");
+    const trips = await Trip.find({ userId: req.user._id }).populate("user", "username email");
     res.status(200).json(trips);
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Failed to fetch trips", error: error.message });
   }
 };
 
 
 const getSingleTrip = async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.tripId).populate("userId", "username profilePicture");
+    const trip = await Trip.findById(req.params.tripId).populate("user", "username email");
     if (!trip) {
       return res.status(404).json({ message: "Trip not found" });
     }
@@ -249,6 +294,8 @@ const deleteComment = async (req, res) => {
 };
 
 module.exports = {
+  getDashboardStats,
+  getUserStats,
   createTrip,
   getAllTrips,
   getUserTrips,

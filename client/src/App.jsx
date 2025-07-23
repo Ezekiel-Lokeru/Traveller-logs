@@ -10,7 +10,7 @@ import CreateTripPage from "./pages/CreateTripPage";
 import SingleTripPage from "./pages/SingleTripPage";
 import EditTripPage from "./pages/EditTripPage";
 import Logout from "./pages/Logout";
-import NotFoundPage from "./pages/NotFoundPage";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -22,7 +22,16 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logout" element={<Logout />} />
         <Route
-          path="/profile/:userId"
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
           element={
             <ProtectedRoute>
               <ProfilePage />
@@ -54,7 +63,6 @@ function App() {
           }
         />
         <Route path="/trips/:id" element={<SingleTripPage />} />
-        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

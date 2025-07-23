@@ -48,9 +48,11 @@ const authUser = asyncHandler(async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
       token: generateToken(user._id),
     });
   } else {
@@ -58,6 +60,7 @@ const authUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
+
 
 // @desc    Get user profile
 // @route   GET /api/users/:userId

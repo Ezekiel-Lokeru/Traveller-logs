@@ -1,5 +1,7 @@
 const express = require("express");
 const {
+  getDashboardStats,
+  getUserStats,
   createTrip,
   getAllTrips,
   getUserTrips,
@@ -19,10 +21,12 @@ const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Trip CRUD
+router.get('/dashboard/stats', protect, getDashboardStats);
+router.get("/stats", protect, getUserStats);
 router.post("/", protect, createTrip);
 router.get("/public", getAllTrips);
-router.get("/:my-trips", protect, getUserTrips);
-router.get("/:tripId", getSingleTrip);
+router.get("/my-trips", protect, getUserTrips);
+router.get("/:tripId", protect, getSingleTrip);
 router.put("/:tripId", protect, updateTrip);
 router.delete("/:tripId", protect, deleteTrip);
 

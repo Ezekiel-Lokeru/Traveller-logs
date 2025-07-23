@@ -35,7 +35,7 @@ const CommentSchema = new mongoose.Schema(
 
 const TripSchema = new mongoose.Schema(
   {
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -49,7 +49,13 @@ const TripSchema = new mongoose.Schema(
     endDate: Date,
     isPublic: {
       type: Boolean,
-      default: false,
+      default: true,
+    },
+    destination: String,
+    images: [String],
+    country: {
+      type: String,
+      required: true,
     },
     destinations: [DestinationSchema],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

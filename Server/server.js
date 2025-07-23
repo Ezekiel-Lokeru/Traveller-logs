@@ -10,11 +10,13 @@ const userRoutes = require("./routes/userRoutes.js");
 const tripRoutes = require("./routes/tripRoutes.js");
 const uploadRoutes = require("./routes/uploadRoutes.js");
 const { errorHandler } = require("./middleware/errorMiddleware.js");
+const cookieParser = require("cookie-parser");
 
 
 connectDB();
 
 const app = express();
+app.use(cookieParser());
 
 app.use(cors({
   origin: "http://localhost:5173", 

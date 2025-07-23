@@ -43,9 +43,11 @@ const SingleTripPage = () => {
       <p>Destination: {trip.destination}</p>
       <p>Start: {trip.startDate?.substring(0, 10)}</p>
       <p>End: {trip.endDate?.substring(0, 10)}</p>
-      <p className="text-sm text-gray-500">By {trip.user.username}</p>
+      <p className="text-sm text-gray-500">
+        By {trip?.user?.username || "Unknown User"}
+      </p>
 
-      {user && user._id === trip.user._id && (
+      {user && trip?.user && user._id === trip.user._id && (
         <div className="mt-4 flex space-x-2">
           <button
             onClick={() => navigate(`/edit-trip/${trip._id}`)}
