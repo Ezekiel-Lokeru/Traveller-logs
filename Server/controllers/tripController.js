@@ -102,20 +102,36 @@ const getSingleTrip = async (req, res) => {
 
 const updateTrip = async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.tripId);
-    if (!trip) {
-      return res.status(404).json({ message: "Trip not found" });
-    }
-    if (trip.userId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized" });
+    const { id } = req.params;
+
+    const trip = await Trip.findById(id);
+    if (!trip) return res.status(404).json({ message: "Trip not found" });
+
+    // Optionally check if the logged-in user owns the trip
+    if (trip.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Unauthorized" });
     }
 
-    const updatedTrip = await Trip.findByIdAndUpdate(req.params.tripId, req.body, { new: true });
+    const updatedFields = {
+      title: req.body.title,
+      description: req.body.description,
+      country: req.body.country,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      isPublic: req.body.isPublic,
+      // Add more fields if needed
+    };
+
+    const updatedTrip = await Trip.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+    });
+
     res.status(200).json({ message: "Trip updated successfully", trip: updatedTrip });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 const deleteTrip = async (req, res) => {
   try {

@@ -1,20 +1,36 @@
 import { Card, CardContent } from "../components/card";
-import { Calendar, MapPin } from "lucide-react";
+import { Calendar, MapPin, Pencil } from "lucide-react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
-const TripCard = ({ trip }) => {
+const TripCard = ({ trip, showEdit = false }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/trips/${trip._id}`);
   };
 
+  const handleEdit = (e) => {
+    e.stopPropagation(); // prevent card click
+    navigate(`/trips/${trip._id}/edit`);
+  };
+
   return (
     <Card
       onClick={handleClick}
-      className="cursor-pointer hover:shadow-xl transition-shadow duration-300 rounded-2xl overflow-hidden"
+      className="cursor-pointer hover:shadow-xl transition-shadow duration-300 rounded-2xl overflow-hidden relative"
     >
+      {/* Edit button in top-right corner */}
+      {showEdit && (
+        <button
+          onClick={handleEdit}
+          className="absolute top-2 right-2 bg-white text-blue-600 p-1 rounded-full shadow hover:bg-blue-50"
+          title="Edit Trip"
+        >
+          <Pencil className="w-4 h-4" />
+        </button>
+      )}
+
       {trip.images?.length > 0 ? (
         <img
           src={trip.images[0]}

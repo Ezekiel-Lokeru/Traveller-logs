@@ -26,7 +26,6 @@ const TripPage = () => {
         <h2 className="text-2xl font-bold">
           {view === "my" ? "My Trips" : "Explore Trips"}
         </h2>
-
         <div className="flex space-x-2">
           {view === "my" && (
             <button

@@ -5,30 +5,32 @@ import api from "../api/api";
 
 const EditTripPage = () => {
   const { id } = useParams();
-  const [trip, setTrip] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [initialData, setInitialData] = useState(null);
 
   useEffect(() => {
     const fetchTrip = async () => {
       try {
         const res = await api.get(`/trips/${id}`);
-        setTrip(res.data);
-      } catch (error) {
-        console.error("Failed to load trip", error);
-      } finally {
-        setLoading(false);
+        setInitialData(res.data.trip);
+      } catch (err) {
+        console.error("Failed to fetch trip:", err);
       }
     };
     fetchTrip();
   }, [id]);
 
-  if (loading) return <p>Loading trip...</p>;
-  if (!trip) return <p>Trip not found.</p>;
-
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800">Edit Trip</h1>
-      <TripForm initialData={trip} isEdit />
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4">Edit Trip</h2>
+      {initialData ? (
+        <TripForm
+          isEdit
+          initialData={initialData}
+          redirectOnSuccess={true}
+        />
+      ) : (
+        <p>Loading trip details...</p>
+      )}
     </div>
   );
 };
