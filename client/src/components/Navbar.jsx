@@ -23,6 +23,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
+            <Link to="/" className="not-only-of-type:text-xl font-bold hover:text-blue-600">Home</Link>
             <Link to="/register" className="text-xl font-bold hover:text-blue-600">Register</Link>
             <Link to="/login" className="text-xl font-bold hover:text-blue-600">Login</Link>
           </>

@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import Footer from "../components/Footer";
 
 // Animation variants
 const fadeUp = {
@@ -17,6 +18,8 @@ const fadeUp = {
 };
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="font-sans text-gray-800">
       {/* Hero Section */}
@@ -151,6 +154,54 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Quick Links to Protected Routes */}
+      <section className="py-16 px-4 bg-green-50 text-center">
+        <motion.h2
+          className="text-3xl font-bold mb-8 text-green-800"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+        >
+          Quick Access
+        </motion.h2>
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 max-w-4xl mx-auto">
+          <motion.button
+            onClick={() => navigate("/dashboard")}
+            className="bg-white border border-blue-300 hover:border-blue-500 shadow-md rounded-xl p-5 text-blue-700 hover:bg-blue-50 transition"
+            custom={1}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            Go to Dashboard
+          </motion.button>
+          <motion.button
+            onClick={() => navigate("/create-trip")}
+            className="bg-white border border-green-300 hover:border-green-500 shadow-md rounded-xl p-5 text-green-700 hover:bg-green-50 transition"
+            custom={2}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            Plan a New Trip
+          </motion.button>
+          <motion.button
+            onClick={() => navigate("/trips")}
+            className="bg-white border border-gray-300 hover:border-gray-500 shadow-md rounded-xl p-5 text-gray-700 hover:bg-gray-50 transition"
+            custom={3}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            View My Trips
+          </motion.button>
+        </div>
+      </section>
+
       {/* Call to Action */}
       <motion.section
         className="py-20 bg-blue-600 text-white text-center px-4"
@@ -170,6 +221,8 @@ const HomePage = () => {
           Sign Up Now
         </Link>
       </motion.section>
+
+      <Footer />
     </div>
   );
 };
