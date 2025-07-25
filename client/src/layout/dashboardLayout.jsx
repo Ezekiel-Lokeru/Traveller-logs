@@ -1,34 +1,15 @@
-// layout/DashboardLayout.jsx
-import { useState } from 'react';
-import Sidebar from '../components/sidebar';
+import DashboardSidebar from "../components/sidebar";
+import { Outlet } from "react-router-dom";
 
-const dashboardLayout = ({ children }) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
+const DashboardLayout = () => {
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar isOpen={sidebarOpen} toggle={toggleSidebar} />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Topbar */}
-        <header className="bg-white shadow-md p-4 flex justify-between items-center md:hidden">
-          <button onClick={toggleSidebar} className="text-gray-500 focus:outline-none">
-            ☰
-          </button>
-          <h1 className="text-xl font-semibold">Dashboard</h1>
-        </header>
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-auto p-4">
-          {children}
-        </main>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <DashboardSidebar />
+      <main className="md:ml-64 pt-20 md:pt-6 px-4 transition-all duration-300">
+        <Outlet />
+      </main>
     </div>
   );
 };
 
-export default dashboardLayout;
+export default DashboardLayout;
