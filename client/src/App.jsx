@@ -4,12 +4,12 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import TripsPage from "./pages/TripPage";
-import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateTripPage from "./pages/CreateTripPage";
 import SingleTripPage from "./pages/SingleTripPage";
 import EditTripPage from "./pages/EditTripPage";
 import Logout from "./pages/Logout";
+import NavBar from "./components/NavBar"
 import Dashboard from "./pages/Dashboard";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
