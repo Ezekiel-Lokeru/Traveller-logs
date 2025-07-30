@@ -9,7 +9,7 @@ import CreateTripPage from "./pages/CreateTripPage";
 import SingleTripPage from "./pages/SingleTripPage";
 import EditTripPage from "./pages/EditTripPage";
 import Logout from "./pages/Logout";
-import NavBar from "./components/NavBar"
+import NavBar from "./components/Navbar"
 import Dashboard from "./pages/Dashboard";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
