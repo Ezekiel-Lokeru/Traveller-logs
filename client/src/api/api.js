@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // or your deployed backend URL
-  withCredentials: true, // optional: for cookie-based auth
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api", 
+  withCredentials: true, 
 });
 
 // Attach token to every request (if using Bearer token auth)
