@@ -4,7 +4,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import TripsPage from "./pages/TripPage";
-import Navbar from "./components/NavBar";
+import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateTripPage from "./pages/CreateTripPage";
 import SingleTripPage from "./pages/SingleTripPage";
@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <>
-      <Navbar />
+      <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />

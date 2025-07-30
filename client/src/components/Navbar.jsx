@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const Navbar = () => {
+const NavBar = () => {
   const { user } = useAuth();
 
   if (user === undefined) return null;
@@ -33,4 +33,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
