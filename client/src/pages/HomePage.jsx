@@ -45,7 +45,7 @@ const HomePage = () => {
           </p>
           <Link
             to="/register"
-            className="bg-yellow-400 text-black font-semibold px-6 py-3 rounded hover:bg-yellow-300 transition"
+            className="bg-blue-600 text-black font-semibold px-6 py-3 rounded hover:bg-blue-600 transition"
           >
             Get Started for Free
           </Link>

@@ -11,6 +11,8 @@ import SingleTripPage from "./pages/SingleTripPage";
 import EditTripPage from "./pages/EditTripPage";
 import Logout from "./pages/Logout";
 import Dashboard from "./pages/Dashboard";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -64,6 +66,7 @@ function App() {
         />
         <Route path="/trips/:id" element={<SingleTripPage />} />
       </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 }

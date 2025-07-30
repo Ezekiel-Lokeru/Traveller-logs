@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import Cookies from "js-cookie";
 import { Car, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -31,17 +31,45 @@ function LoginPage() {
       const res = await api.post("/auth/login", formData);
       setUser(res.data);
       Cookies.set("token", res.data.token);
+      toast.success("✅ Login successful!");
       navigate("/dashboard/");
     } catch (error) {
       console.error("Login error:", error);
       setError(error.response?.data?.message || "Login failed");
+      toast.error("❌ Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    const demoCredentials = {
+      email: "user@travelog.com",
+      password: "password123",
+    };
+
+    setFormData(demoCredentials);
+    setError("");
+    setLoading(true);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500)); // slight delay for better UX
+      const res = await api.post("/auth/login", demoCredentials);
+      setUser(res.data);
+      Cookies.set("token", res.data.token);
+      toast.success("🎉 Logged in as Demo User!");
+      navigate("/dashboard/");
+    } catch (error) {
+      console.error("Demo login error:", error);
+      setError(error.response?.data?.message || "Demo login failed");
+      toast.error("❌ Demo login failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -92,9 +120,9 @@ function LoginPage() {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
-                  className="input pl-10 pr-10"
+                  className="input pl-10 pr-10 w-full"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
@@ -124,28 +152,27 @@ function LoginPage() {
                 disabled={loading}
                 className="btn-primary w-full flex items-center justify-center h-12 text-base font-medium bg-blue-600"
               >
-                {loading ? <LoadingSpinner size="small" /> : 'Sign in'}
+                {loading ? <LoadingSpinner size="small" /> : "Sign in"}
               </button>
             </div>
 
-            {/* Demo Accounts */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">Demo Accounts:</p>
-              <div className="text-xs text-gray-600 space-y-1">
-                <p>
-                  <strong>Admin:</strong> admin@library.com / admin123
-                </p>
-                <p>
-                  <strong>User:</strong> user@library.com / user123
-                </p>
-              </div>
+            {/* Demo Login Button */}
+            <div>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={handleDemoLogin}
+                className="mt-4 w-full h-12 flex items-center justify-center border border-blue-500 text-blue-600 font-medium rounded-md hover:bg-blue-50 transition"
+              >
+                {loading ? <LoadingSpinner size="small" /> : "Try Demo Account"}
+              </button>
             </div>
           </form>
 
           {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <Link
                 to="/register"
                 className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
@@ -163,6 +190,6 @@ function LoginPage() {
       </div>
     </div>
   );
-};
+}
 
 export default LoginPage;
